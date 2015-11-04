@@ -36,15 +36,15 @@ function draw() {
     for (var j = 0; j < howtall; j++) {
       // read pixels from source image...
       // everything is b&w, so the red (array index 0) channel is fine:
-      var p0 = img[whichimage].get(i-1, j-1)[0]>threshold; // upper left
-      var p1 = img[whichimage].get(i, j-1)[0]>threshold; // upper mid
-      var p2 = img[whichimage].get(i+1, j-1)[0]>threshold; // upper right
-      var p3 = img[whichimage].get(i-1, j)[0]>threshold; // left
-      var p4 = img[whichimage].get(i, j)[0]>threshold; // center pixel
-      var p5 = img[whichimage].get(i+1, j)[0]>threshold; // right
-      var p6 = img[whichimage].get(i-1, j+1)[0]>threshold; // lower left
-      var p7 = img[whichimage].get(i, j+1)[0]>threshold; // lower mid
-      var p8 = img[whichimage].get(i+1, j+1)[0]>threshold; // lower right
+      var p0 = img[whichimage].get(i-1, j-5)[0]>threshold; // upper left
+      var p1 = img[whichimage].get(i+1, j-1)[0]>threshold; // upper mid
+      var p2 = img[whichimage].get(i-1, j-1)[0]>threshold; // upper right
+      var p3 = img[whichimage].get(i+5, j+1)[0]>threshold; // left
+      var p4 = img[whichimage].get(i+1, j-1)[0]>threshold; // center pixel
+      var p5 = img[whichimage].get(i-1, j)[0]>threshold; // right
+      var p6 = img[whichimage].get(i+1, j+1)[0]>threshold; // lower left
+      var p7 = img[whichimage].get(i+1, j-1)[0]>threshold; // lower mid
+      var p8 = img[whichimage].get(i-1, j+1)[0]>threshold; // lower right
       var neighbors = p0+p1+p2+p3+p5+p6+p7+p8; // how many neighbors are alive?
       var result;
       
