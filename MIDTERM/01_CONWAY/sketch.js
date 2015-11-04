@@ -13,7 +13,6 @@
 // alive or generate a new one from a dead pixel.  this rule set is sometimes referred to as
 // B3/S23 (a pixel is "Born" with 3 neighbors and "Stays Alive" with 2 or 3 neighbors.
 // tweak these rules and see if you can find other interesting (or self-sustaining) systems.
-//
 
 var threshold = 128;
 var howwide = 50;

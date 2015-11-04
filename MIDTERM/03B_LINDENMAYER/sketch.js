@@ -17,7 +17,7 @@
 // placeholders to create really complex patterns.
 
 // TURTLE STUFF:
-var x, y; // the current position of the turtle
+var x, y, xT, yT; // the current position of the turtle
 var currentangle = 0; // which way the turtle is pointing
 var step = 20; // how much the turtle moves with each 'F'
 var angle = 90; // how much the turtle turns with a '-' or '+'
@@ -26,8 +26,8 @@ var angle = 90; // how much the turtle turns with a '-' or '+'
 var thestring = 'A'; // "axiom" or start of the string
 var numloops = 5; // how many iterations of the L-system to pre-compute
 var therules = []; // array for rules
-therules[0] = ['A', '-BF+AFA+FB-']; // first rule
-therules[1] = ['B', '+AF-BFB-FA+']; // second rule
+therules[0] = ['A', '[LBFRAFARFBL]']; // first rule
+therules[1] = ['B', '[RAFLBFBLFAR']; // second rule
 
 
 var whereinstring = 0; // where in the L-system are we drawing right now?
@@ -36,7 +36,7 @@ var whereinstring = 0; // where in the L-system are we drawing right now?
 function setup()
 {
   createCanvas(800, 600); // this is the size of the window
-  background(255); // background to white
+  background(0); // background to white
   stroke(0, 0, 0, 255); // draw in black
   
   // start the x and y position at lower-left corner
@@ -100,18 +100,58 @@ function drawIt(k)
     // polar to cartesian transformation based on step and currentangle:
     var x1 = x + step*cos(radians(currentangle));
     var y1 = y + step*sin(radians(currentangle));
+    noStroke();
     line(x, y, x1, y1); // connect the old and the new
     // update the turtle's position:
     x = x1;
     y = y1;
   }
-  else if(k=='+')
+  else if(k=='R')
   {
-   currentangle+=angle; // turn left
+    currentangle+=angle; // turn left
+    var x1 = x + step*cos(radians(currentangle));
+    var y1 = y + step*sin(radians(currentangle));
+    noStroke();
+    line(x, y, x1, y1); // connect the old and the new
+    // update the turtle's position:
+    x = x1;
+    y = y1;
   }
-  else if(k=='-')
+  else if(k=='L')
   {
-   currentangle-=angle; // turn right   
+    currentangle-=angle; // turn right
+    var x1 = x + step*cos(radians(currentangle));
+    var y1 = y + step*sin(radians(currentangle));
+    noStroke();
+    line(x, y, x1, y1); // connect the old and the new
+    // update the turtle's position:
+    x = x1;
+    y = y1;
+  }
+  
+  else if(k=='['){
+    //teleports to random place, saves "home" position
+    xT = x;
+    yT = y;
+    var x1 = random(0, 800);
+    var y1 = random (0, 600);
+    noStroke();
+    //strokeWeight(0.5);
+    line(x, y, x1, y1); // connect the old and the new
+    // update the turtle's position:
+    x = x1;
+    y = y1;
+  }
+  
+  else if(k==']'){
+    // returns to "home" position
+    if (xT !=null && yT != null){
+    noStroke();
+    //strokeWeight(0.5);
+      line(x, y, xT, yT); // connect the old and the new
+      x = xT;
+      y = yT;
+    }
   }
    
   // DRAW EVERYTHING:
@@ -124,14 +164,20 @@ function drawIt(k)
 
   // pick a gaussian (D&D) distribution for the radius:
   var radius = 0;
-  radius+= random(0, 15);
-  radius+= random(0, 15);
-  radius+= random(0, 15);
+  radius+= random(0, 20);
+  radius+= random(0, 20);
+  radius+= random(0, 20);
   radius = radius/3;
   
   // draw the stuff:
-  fill(r, g, b, a); // interior fill color
+  fill(255); // interior fill color
+  noStroke();
   ellipse(x, y, radius, radius); // circle that chases the mouse
 
 }
 
+function keyTyped() {
+  if (key === ' ') {
+    background(0);
+  }
+}

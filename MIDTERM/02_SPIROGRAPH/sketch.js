@@ -19,6 +19,8 @@
 // see if there's a simple way to get an effective sound, or limit the number of shapes
 // you're working with.
 
+var x = 0;
+var y = 0;
 var NUMSINES = 20; // how many of these things can we do at once?
 var sines = new Array(NUMSINES); // an array to hold all the current angles
 var rad; // an initial radius value for the central sine
@@ -40,7 +42,7 @@ function setup()
   createCanvas(800, 600); // OpenGL mode
 
   rad = height/4; // compute radius for central circle
-  background(255); // clear the screen
+  background(50); // clear the screen
 
   for (i = 0; i<sines.length; i++)
   {
@@ -48,8 +50,8 @@ function setup()
     oscs[i] = new p5.Oscillator(); // this initializes the oscillators
     oscs[i].setType('sine');
     //oscs[i].freq(200*(i+1));
-    oscs[i].freq(midiToFreq(pitches[i]));
-    oscs[i].amp(0.01);
+    oscs[i].freq(map(x, 0, pitches[i], 100, 1000));
+    oscs[i].amp(map(y, 0, pitches[i], 1, 0));
     oscs[i].start();
   }
 }
@@ -57,8 +59,8 @@ function setup()
 function draw()
 {
   if (!trace) {
-    background(255); // clear screen if showing geometry
-    stroke(0, 255); // black pen
+    background(50); // clear screen if showing geometry
+    stroke(200, 200, 200*(float(i)/sines.length), alpha); // black pen
     noFill(); // don't fill
   } 
 
@@ -71,17 +73,17 @@ function draw()
     var erad = 0; // radius for small "point" within circle... this is the 'pen' when tracing
     // setup for tracing
     if (trace) {
-      stroke(0, 0, 255*(float(i)/sines.length), alpha); // blue
-      fill(0, 0, 255, alpha/2); // also, um, blue
+      stroke(200, 200, 200*(float(i)/sines.length), alpha);
+      fill(200, 200, 200, alpha/2);
       erad = 5.0*(1.0-float(i)/sines.length); // pen width will be related to which sine
     }
     var radius = rad/(i+1); // radius for circle itself
     rotate(sines[i]); // rotate circle
-    if (!trace) ellipse(0, 0, radius*2, radius*2); // if we're simulating, draw the sine
+    if (!trace) ellipse(x, y, radius*2, radius*2); // if we're simulating, draw the sine
     push(); // go up one level
     translate(0, radius); // move to sine edge
-    if (!trace) ellipse(0, 0, 5, 5); // draw a little circle
-    if (trace) ellipse(0, 0, erad, erad); // draw with erad if tracing
+    if (!trace) ellipse(x, y, 5, 5); // draw a little circle
+    if (trace) ellipse(x, y, erad, erad); // draw with erad if tracing
     pop(); // go down one level
     translate(0, radius); // move into position for next sine
     sines[i] = (sines[i]+(fund+(fund*i*ratio)))%TWO_PI; // update angle based on fundamental
@@ -95,7 +97,7 @@ function keyReleased()
 {
   if (key==' ') {
     trace = !trace; 
-    background(255);
+    background(50);
   }
 }
 
